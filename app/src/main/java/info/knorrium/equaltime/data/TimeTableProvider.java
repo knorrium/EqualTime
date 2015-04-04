@@ -18,6 +18,7 @@ public class TimeTableProvider extends ContentProvider {
     private TimeTableDbHelper mOpenHelper;
 
     static final int EVENT = 100;
+    static final int EVENT_WITH_ID = 101;
 
     public static final SQLiteQueryBuilder sEventQueryBuilder;
 
@@ -32,10 +33,33 @@ public class TimeTableProvider extends ContentProvider {
             TimeTableContract.EventEntry.TABLE_NAME +
                 "." + TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR + " = ? ";
 
+    public static final String sEventIdSelection =
+            TimeTableContract.EventEntry.TABLE_NAME +
+                    "." + TimeTableContract.EventEntry._ID + " = ? ";
+
+
+    private Cursor getEventById(Uri uri, String[] projection, String sortOrder) {
+        String selectedId = TimeTableContract.EventEntry.getEventFromUri(uri);
+        String[] selectionArgs;
+        String selection;
+
+
+
+        return sEventQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sEventIdSelection,
+                new String[]{selectedId},
+                null,
+                null,
+                sortOrder
+        );
+    }
+
     static UriMatcher buildUriMatcher() {
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         matcher.addURI(TimeTableContract.CONTENT_AUTHORITY, TimeTableContract.PATH_EVENT, EVENT);
+        matcher.addURI(TimeTableContract.CONTENT_AUTHORITY, TimeTableContract.PATH_EVENT + "/*", EVENT_WITH_ID);
 
         return matcher;
     }
@@ -52,6 +76,9 @@ public class TimeTableProvider extends ContentProvider {
         switch (match) {
             case EVENT:
                 return TimeTableContract.EventEntry.CONTENT_ITEM_TYPE;
+            case EVENT_WITH_ID:
+                return TimeTableContract.EventEntry.CONTENT_TYPE;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -62,12 +89,18 @@ public class TimeTableProvider extends ContentProvider {
                         String sortOrder) {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            // "weather"
+            // "event"
             case EVENT: {
                 retCursor = mOpenHelper.getReadableDatabase().query(TimeTableContract.EventEntry.TABLE_NAME,
                         projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             }
+            // "event/*"
+            case EVENT_WITH_ID: {
+                retCursor = getEventById(uri, projection, sortOrder);
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
