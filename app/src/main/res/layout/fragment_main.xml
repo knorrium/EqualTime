@@ -22,23 +22,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/txtName1" />
+                android:id="@+id/txtName1"
+                android:layout_gravity="center_horizontal"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start"
-                android:id="@+id/btnTimer1" />
+                android:id="@+id/btnTimer1"
+                android:layout_gravity="center_horizontal"/>
 
             <Chronometer
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/chronometer1" />
+                android:id="@+id/chronometer1"
+                android:layout_gravity="center_horizontal"/>
 
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/listEntries1" />
+                android:id="@+id/listEntries1"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -51,23 +55,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/txtName2" />
+                android:id="@+id/txtName2"
+                android:layout_gravity="center_horizontal"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start"
-                android:id="@+id/btnTimer2" />
+                android:id="@+id/btnTimer2"
+                android:layout_gravity="center_horizontal"/>
 
             <Chronometer
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/chronometer2" />
+                android:id="@+id/chronometer2"
+                android:layout_gravity="center_horizontal"/>
 
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/listEntries2" />
+                android:id="@+id/listEntries2"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </LinearLayout>
 
