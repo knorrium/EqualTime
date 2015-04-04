@@ -1,5 +1,6 @@
 package info.knorrium.equaltime;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.os.Build;
 
 
 public class MainActivity extends ActionBarActivity {
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    static final int NAME_SETTINGS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,8 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivityForResult(intent, NAME_SETTINGS);
         }
 
         return super.onOptionsItemSelected(item);
