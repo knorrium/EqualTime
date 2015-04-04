@@ -1,7 +1,11 @@
 package info.knorrium.equaltime;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -13,6 +17,8 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import info.knorrium.equaltime.data.TimeTableContract;
 
 /**
  * Created by felipek on 4/3/15.
@@ -52,6 +58,21 @@ public class PlaceholderFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Timer stopped", Toast.LENGTH_SHORT).show();
                     button.setText("Start");
                     timer1.stop();
+
+                    ContentValues values = new ContentValues();
+
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, "FIRST NAME");
+
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, "TODAY");
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "123");
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, "456");
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, "789");
+
+                    Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
+                    long eventId = ContentUris.parseId(insertedUri);
+
+
+
                 }
             }
         });
