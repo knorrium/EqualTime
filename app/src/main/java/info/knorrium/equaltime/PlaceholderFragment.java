@@ -25,7 +25,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
 
 import info.knorrium.equaltime.data.TimeTableContract;
 
@@ -161,7 +163,12 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, Utility.getSavedName(v.getContext(), 1));
 
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, "TODAY");
+
+                    Date today = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("MMM, d");
+                    String todayText = sdf.format(today);
+
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "123");
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, "456");
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, "789");
