@@ -18,12 +18,27 @@
             android:layout_height="fill_parent"
             android:layout_weight="1">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtName1"
-                android:layout_gravity="center_horizontal"/>
+                android:orientation="horizontal"
+                android:id="@+id/radioGroup"
+                android:layout_gravity="center_horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New RadioButton"
+                    android:id="@+id/rdName1"
+                    android:layout_gravity="center_horizontal"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New RadioButton"
+                    android:id="@+id/rdName2"
+                    android:layout_gravity="center_horizontal"/>
+            </RadioGroup>
 
             <Button
                 android:layout_width="wrap_content"
@@ -45,38 +60,6 @@
                 android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtName2"
-                android:layout_gravity="center_horizontal"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start"
-                android:id="@+id/btnTimer2"
-                android:layout_gravity="center_horizontal"/>
-
-            <Chronometer
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chronometer2"
-                android:layout_gravity="center_horizontal"/>
-
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/listEntries2"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
