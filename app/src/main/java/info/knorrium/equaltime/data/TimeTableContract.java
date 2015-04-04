@@ -41,5 +41,9 @@ public class TimeTableContract {
         public static Uri buildEventUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+        public static String getEventFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
     }
 }
