@@ -171,7 +171,7 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "123");
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, "456");
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, "789");
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, timer1.getText().toString());
 
                     Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
                     long eventId = ContentUris.parseId(insertedUri);
