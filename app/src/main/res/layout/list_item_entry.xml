@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/entryIdView" />
+        android:text="ID"
+        android:id="@+id/entryIdView"
+        android:layout_weight="1"
+        />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/creatorView" />
+        android:text="Creator"
+        android:id="@+id/creatorView"
+        android:layout_weight="1"
+        />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/dateView" />
+        android:text="Date"
+        android:id="@+id/dateView"
+        android:layout_weight="1"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/timespentView" />
+        android:text="Duration"
+        android:id="@+id/timespentView"
+        android:layout_weight="1"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/latitudeView" />
+        android:text="Lat"
+        android:id="@+id/latitudeView"
+        android:layout_weight="1"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/longitudeView" />
+        android:text="Long"
+        android:id="@+id/longitudeView"
+        android:layout_weight="1"/>
 </LinearLayout>
