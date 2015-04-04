@@ -159,7 +159,7 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 
                     ContentValues values = new ContentValues();
 
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, "FIRST NAME");
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, Utility.getSavedName(v.getContext(), 1));
 
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, "TODAY");
                     values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "123");
