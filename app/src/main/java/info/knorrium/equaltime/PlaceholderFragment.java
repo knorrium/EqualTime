@@ -24,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,13 +132,13 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         Context context = getActivity().getApplicationContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        TextView name1view = (TextView) rootView.findViewById(R.id.txtName1);
+        RadioButton name1radio = (RadioButton) rootView.findViewById(R.id.rdName1);
         String strName1 = prefs.getString(context.getString(R.string.pref_first_name_key), context.getString(R.string.pref_first_name_default));
-        name1view.setText(strName1);
+        name1radio.setText(strName1);
 
-        TextView name2view = (TextView) rootView.findViewById(R.id.txtName2);
+        RadioButton name2radio = (RadioButton) rootView.findViewById(R.id.rdName2);
         String strName2 = prefs.getString(context.getString(R.string.pref_second_name_key), context.getString(R.string.pref_second_name_default));
-        name2view.setText(strName2);
+        name2radio.setText(strName2);
 
         Button btnTimer1 = (Button) rootView.findViewById(R.id.btnTimer1);
 
@@ -162,8 +164,19 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
                     timer1.stop();
 
                     ContentValues values = new ContentValues();
-
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, Utility.getSavedName(v.getContext(), 1));
+                    String name = "";
+                    int id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+                    if (id == -1){
+                        name = "Not selected";
+                    }
+                    else{
+                        if (id == R.id.rdName1) {
+                            name = ((RadioButton) rootView.findViewById(R.id.rdName1)).getText().toString();
+                        } else if (id == R.id.rdName2) {
+                            name = ((RadioButton) rootView.findViewById(R.id.rdName2)).getText().toString();
+                        }
+                    }
+                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, name);
 
 
                     Date today = new Date();
