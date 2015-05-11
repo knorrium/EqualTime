@@ -152,47 +152,50 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
                 View rootView = v.getRootView();
                 Chronometer timer1 = (Chronometer) rootView.findViewById(R.id.chronometer1);
 
-                if (button.getText().equals("Start")) {
-                    timer1.setBase(SystemClock.elapsedRealtime());
-                    timer1.start();
 
-                    Toast.makeText(getActivity().getApplicationContext(), "Timer started", Toast.LENGTH_SHORT).show();
-                    button.setText("Stop");
+                int id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+                if (id == -1){
+                    Toast.makeText(getActivity().getApplicationContext(), "Please select a person", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Timer stopped", Toast.LENGTH_SHORT).show();
-                    button.setText("Start");
-                    timer1.stop();
+                    if (button.getText().equals("Start")) {
+                        timer1.setBase(SystemClock.elapsedRealtime());
+                        timer1.start();
 
-                    ContentValues values = new ContentValues();
-                    String name = "";
-                    int id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
-                    if (id == -1){
-                        name = "Not selected";
-                    }
-                    else{
-                        if (id == R.id.rdName1) {
-                            name = ((RadioButton) rootView.findViewById(R.id.rdName1)).getText().toString();
-                        } else if (id == R.id.rdName2) {
-                            name = ((RadioButton) rootView.findViewById(R.id.rdName2)).getText().toString();
+                        Toast.makeText(getActivity().getApplicationContext(), "Timer started", Toast.LENGTH_SHORT).show();
+                        button.setText("Stop");
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "Timer stopped", Toast.LENGTH_SHORT).show();
+                        button.setText("Start");
+                        timer1.stop();
+
+                        ContentValues values = new ContentValues();
+                        String name = "";
+                        id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+                        if (id == -1){
+                            name = "Not selected";
                         }
+                        else {
+                            if (id == R.id.rdName1) {
+                                name = ((RadioButton) rootView.findViewById(R.id.rdName1)).getText().toString();
+                            } else if (id == R.id.rdName2) {
+                                name = ((RadioButton) rootView.findViewById(R.id.rdName2)).getText().toString();
+                            }
+                        }
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, name);
+
+                        Date today = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("MMM, d");
+                        String todayText = sdf.format(today);
+
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "0");
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, "0");
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, timer1.getText().toString());
+
+                        Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
+                        long eventId = ContentUris.parseId(insertedUri);
+
                     }
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, name);
-
-
-                    Date today = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("MMM, d");
-                    String todayText = sdf.format(today);
-
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "123");
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, "456");
-                    values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, timer1.getText().toString());
-
-                    Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
-                    long eventId = ContentUris.parseId(insertedUri);
-
-
-
                 }
             }
         });
