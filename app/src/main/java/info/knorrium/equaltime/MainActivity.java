@@ -8,17 +8,55 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 
 public class MainActivity extends ActionBarActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     static final int NAME_SETTINGS = 0;
+
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //V/MainActivity( 7285): onActivityResult: 65537 - -1 - Intent { act=com.google.android.gms.location.places.ui.PICK_PLACE pkg=com.google.android.gms cmp=com.google.android.gms/com.google.android.location.places.ui.placepicker.PlacePickerActivity (has extras) }
+        if (requestCode == 65537) {
+            if (resultCode == RESULT_OK) {
+                if (!data.toString().isEmpty()) {
+                    Log.v(LOG_TAG, "onActivityResult: " + requestCode + " - " + resultCode + " - " + data.toString());
+                    Place place = PlacePicker.getPlace(data, this);
+                    String toastMsg = String.format("Place: %s", place.getName());
+
+                    double lat = place.getLatLng().latitude;
+                    TextView txtLat = (TextView) findViewById(R.id.txtLat);
+                    txtLat.setText(String.valueOf(lat));
+
+                    double lon = place.getLatLng().longitude;
+                    TextView txtLon = (TextView) findViewById(R.id.txtLon);
+                    txtLon.setText(String.valueOf(lon));
+
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                    TextView txtPlace = (TextView) findViewById(R.id.txtPlaceDetails);
+                    txtPlace.setText(place.getName());
+
+                } else {
+                    Toast.makeText(this, "No Place selected", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
