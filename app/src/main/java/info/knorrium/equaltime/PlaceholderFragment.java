@@ -29,6 +29,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
@@ -41,6 +47,7 @@ import info.knorrium.equaltime.data.TimeTableContract;
 public class PlaceholderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EVENT_LOADER = 0;
     private TimeTableAdapter mTimeTableAdapter;
+    private static final int REQUEST_PLACE_PICKER = 1;
 
     private static final String[] EVENT_COLUMNS = {
             TimeTableContract.EventEntry.TABLE_NAME + "." + TimeTableContract.EventEntry._ID,
@@ -140,6 +147,29 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         String strName2 = prefs.getString(context.getString(R.string.pref_second_name_key), context.getString(R.string.pref_second_name_default));
         name2radio.setText(strName2);
 
+        Button btnLocation = (Button) rootView.findViewById(R.id.btnLocation);
+
+        btnLocation.setOnClickListener( new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                // Construct an intent for the place picker
+                                                try {
+                                                    PlacePicker.IntentBuilder intentBuilder =
+                                                            new PlacePicker.IntentBuilder();
+                                                    Intent intent = intentBuilder.build(getActivity());
+                                                    // Start the intent by requesting a result,
+                                                    // identified by a request code.
+                                                    startActivityForResult(intent, REQUEST_PLACE_PICKER);
+
+                                                } catch (GooglePlayServicesRepairableException e) {
+                                                    // ...
+                                                } catch (GooglePlayServicesNotAvailableException e) {
+                                                    // ...
+                                                }
+                                            }
+                                        }
+        );
+
         Button btnTimer1 = (Button) rootView.findViewById(R.id.btnTimer1);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listEntries1);
@@ -187,9 +217,12 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
                         SimpleDateFormat sdf = new SimpleDateFormat("MMM, d");
                         String todayText = sdf.format(today);
 
+                        TextView txtLat = (TextView) rootView.findViewById(R.id.txtLat);
+                        TextView txtLon = (TextView) rootView.findViewById(R.id.txtLon);
+
                         values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, "0");
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, "0");
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, String.valueOf(txtLat.getText()));
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, String.valueOf(txtLon.getText()));
                         values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, timer1.getText().toString());
 
                         Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
