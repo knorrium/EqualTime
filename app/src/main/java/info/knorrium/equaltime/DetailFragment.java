@@ -15,6 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import info.knorrium.equaltime.data.TimeTableContract;
 
 /**
@@ -76,7 +89,6 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         Log.v(LOG_TAG, "In onLoadFinished, DATA: " + data.toString());
         if (!data.moveToFirst()) { return; }
 
-
         TextView txtId = (TextView) getView().findViewById(R.id.detail_id);
         txtId.setText(data.getString(COL_EVENT_ID));
 
@@ -91,9 +103,61 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
 
         TextView txtLat = (TextView) getView().findViewById(R.id.detail_latitude);
         txtLat.setText(data.getString(COL_EVENT_COORD_LAT));
+        double dblLat = Double.valueOf(txtLat.getText().toString());
 
         TextView txtLong = (TextView) getView().findViewById(R.id.detail_longitude);
         txtLong.setText(data.getString(COL_EVENT_COORD_LONG));
+        double dblLong = Double.valueOf(txtLong.getText().toString());
+
+        MapView mapView = (MapView) getView().findViewById(R.id.mapview);
+        mapView.getMap().addMarker(new MarkerOptions()
+                .position(new LatLng(dblLat, dblLong))
+                .title("New Marker")
+                .snippet("Placeholder snippet"));
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+//                .alpha(0.7f);
+
+        MapsInitializer.initialize(this.getActivity());
+
+        // Updates the location and zoom of the MapView
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 17);
+        mapView.getMap().animateCamera(cameraUpdate);
+
+
+//        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+
+//        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+//        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.4, -122.1), 15));
+//        map.animateCamera(CameraUpdateFactory.zoomIn());
+//        map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+////
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(new LatLng(37.4, -122.1))      // Sets the center of the map to Mountain View
+//                .zoom(17)                   // Sets the zoom
+//                .bearing(90)                // Sets the orientation of the camera to east
+//                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+//                .build();                   // Creates a CameraPosition from the builder
+//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+//        MapView mapView = (MapView) getView().findViewById(R.id.map);
+//
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+////                .target(MOUNTAIN_VIEW)      // Sets the center of the map to Mountain View
+//                .zoom(17)                   // Sets the zoom
+//                .bearing(90)                // Sets the orientation of the camera to east
+//                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+//                .build();                   // Creates a CameraPosition from the builder
+//        GoogleMap map = ((SupportMapFragment) getView().findViewById(R.id.map)).getMap();
+//        map.setMyLocationEnabled(true);
+//
+//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+//        CameraUpdate center=
+//                CameraUpdateFactory.newLatLng(new LatLng(40.76793169992044,
+//                        -73.98180484771729));
+//        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+
     }
 
     @Override
