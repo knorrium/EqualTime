@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import info.knorrium.equaltime.data.TimeTableContract;
 
 public class MainActivity extends ActionBarActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -90,6 +91,8 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivityForResult(intent, NAME_SETTINGS);
+        } else if (id == R.id.action_erase) {
+            getContentResolver().delete(TimeTableContract.EventEntry.CONTENT_URI, null, null);
         }
 
         return super.onOptionsItemSelected(item);
