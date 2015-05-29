@@ -54,6 +54,7 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
                     txtPlace.setText(place.getName());
 
                 } else {
+                    //TODO: Fix the bug where an entry can be added without picking a location first
                     Toast.makeText(this, "No Place selected", Toast.LENGTH_LONG).show();
                 }
             }
