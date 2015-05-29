@@ -50,6 +50,7 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
 
                     Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                     TextView txtPlace = (TextView) findViewById(R.id.txtPlaceDetails);
+                    txtPlace.setVisibility(View.VISIBLE);
                     txtPlace.setText(place.getName());
 
                 } else {
