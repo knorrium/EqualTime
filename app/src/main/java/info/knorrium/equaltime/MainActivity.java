@@ -41,10 +41,12 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
                     double lat = place.getLatLng().latitude;
                     TextView txtLat = (TextView) findViewById(R.id.txtLat);
                     txtLat.setText(String.valueOf(lat));
+                    txtLat.setVisibility(View.GONE);
 
                     double lon = place.getLatLng().longitude;
                     TextView txtLon = (TextView) findViewById(R.id.txtLon);
                     txtLon.setText(String.valueOf(lon));
+                    txtLon.setVisibility(View.GONE);
 
                     Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                     TextView txtPlace = (TextView) findViewById(R.id.txtPlaceDetails);
