@@ -59,19 +59,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtPlaceDetails"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Place" />
+                    android:layout_gravity="center_horizontal" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LAT"
+                    android:text="Place"
+                    android:visibility="invisible"
                     android:id="@+id/txtLat" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="LON"
+                    android:text=""
                     android:id="@+id/txtLon" />
             </LinearLayout>
 
