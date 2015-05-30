@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 
+import info.knorrium.equaltime.data.MyPlace;
 import info.knorrium.equaltime.data.TimeTableContract;
 
 /**
@@ -64,6 +66,30 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
     static final int COL_EVENT_COORD_LONG = 3;
     static final int COL_EVENT_DURATION = 4;
     static final int COL_EVENT_CREATOR = 5;
+
+    private MyPlace place;
+    private long startTime = 0;
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.v("onActivtyResult", "requestCode: " + requestCode + " - resultCode: " + resultCode + " - " + data.toString());
+        //V/MainActivity( 7285): onActivityResult: 65537 - -1 - Intent { act=com.google.android.gms.location.places.ui.PICK_PLACE pkg=com.google.android.gms cmp=com.google.android.gms/com.google.android.location.places.ui.placepicker.PlacePickerActivity (has extras) }
+        if (requestCode == 1) {
+            if (resultCode == getActivity().RESULT_OK) {
+                if (!data.toString().isEmpty()) {
+                    Log.v(LOG_TAG, "onActivityResult: " + requestCode + " - " + resultCode + " - " + data.toString());
+                    Place place = PlacePicker.getPlace(data, this.getActivity());
+                    String toastMsg = String.format("Place: %s", place.getName());
+                    this.place = new MyPlace(place);
+                    populatePlace();
+                } else {
+                    //TODO: Fix the bug where an entry can be added without picking a location first
+                    Toast.makeText(this.getActivity(), "No Place selected", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
 
 
     @Override
@@ -106,6 +132,54 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         super.onActivityCreated(savedInstanceState);
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.v("PlaceHolderFragment", "onPause - startTime -" + startTime);
+        if (place != null) {
+            Log.v("PlaceHolderFragment", "onPause - Place: " + place.toString());
+
+        }
+
+        getActivity().getSupportFragmentManager().findFragmentByTag("TFTAG").setRetainInstance(true);
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.v("PlaceHolderFragment", "onResume");
+        getActivity().getSupportFragmentManager().findFragmentByTag("TFTAG").getRetainInstance();
+        if (place != null) {
+            Log.v("PlaceHolderFragment", "onResume - Place: " + place.toString());
+            populatePlace();
+        }
+        populateTimer(getView());
+        Log.v("PlaceHolderFragment", "onResume startTime - " + startTime);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        Log.v("PlaceholderFragment", "onSaveInstanceState -> startTime: " + startTime);
+        Log.v("PlaceholderFragment", "onSaveInstanceState -> place: " + place);
+        savedInstanceState.putSerializable("place", place);
+
+        savedInstanceState.putLong("startTime", startTime);
+    }
+
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//        // Save UI state changes to the savedInstanceState.
+//        // This bundle will be passed to onCreate if the process is
+//        // killed and restarted.
+//        Log.v("PlaceholderFragment", "onRestoreInstanceState -> startTime: " + savedInstanceState.getLong("startTime", startTime));
+//
+//    }
+
     // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged( ) {
 //        updateWeather();
@@ -128,7 +202,99 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         return super.onOptionsItemSelected(item);
     }
 
+    private void populateTimer(View v) {
+        Button btnTimer = (Button) v.findViewById(R.id.btnTimer1);
+        Chronometer timer1 = (Chronometer) v.findViewById(R.id.chronometer1);
 
+        if (this.startTime > 0) {
+            btnTimer.setText(getResources().getString(R.string.btn_timer_stop));
+            timer1.setBase(this.startTime);
+            timer1.start();
+        } else {
+            Log.v("populateTimer", getString(R.string.btn_timer_start));
+            Log.v("populateTimer", getResources().getString(R.string.btn_timer_start));
+            btnTimer.setText(getResources().getString(R.string.btn_timer_start));
+        }
+
+        btnTimer.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button button = (Button) v;
+                View rootView = v.getRootView();
+                Chronometer timer1 = (Chronometer) rootView.findViewById(R.id.chronometer1);
+
+                int id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+
+                TextView txtPlace = (TextView) rootView.findViewById(R.id.txtPlaceDetails);
+                if (id == -1){
+                    Toast.makeText(getActivity().getApplicationContext(), "Please select a person", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (txtPlace.getVisibility() == View.GONE) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Please select a place", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (button.getText().equals("Start")) {
+                        startTime = SystemClock.elapsedRealtime();
+                        timer1.setBase(startTime);
+                        timer1.start();
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Timer started", Toast.LENGTH_SHORT).show();
+                        button.setText("Stop");
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "Timer stopped", Toast.LENGTH_SHORT).show();
+                        button.setText("Start");
+                        timer1.stop();
+                        startTime = 0;
+
+                        ContentValues values = new ContentValues();
+                        String name = "";
+                        id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+                        if (id == R.id.rdName1) {
+                            name = ((RadioButton) rootView.findViewById(R.id.rdName1)).getText().toString();
+                        } else if (id == R.id.rdName2) {
+                            name = ((RadioButton) rootView.findViewById(R.id.rdName2)).getText().toString();
+                        }
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, name);
+
+                        Date today = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("MMM, d");
+                        String todayText = sdf.format(today);
+
+                        TextView txtLat = (TextView) rootView.findViewById(R.id.txtLat);
+                        TextView txtLon = (TextView) rootView.findViewById(R.id.txtLon);
+
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, String.valueOf(txtLat.getText()));
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, String.valueOf(txtLon.getText()));
+                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, timer1.getText().toString());
+
+                        Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
+                        long eventId = ContentUris.parseId(insertedUri);
+                        timer1.setBase(SystemClock.elapsedRealtime());
+                    }
+                }
+            }
+        });
+    }
+
+    private void populatePlace() {
+        double lat = place.getLat();
+        TextView txtLat = (TextView) getActivity().findViewById(R.id.txtLat);
+        txtLat.setText(String.valueOf(lat));
+        txtLat.setVisibility(View.GONE);
+
+        double lon = place.getLon();
+        TextView txtLon = (TextView) getActivity().findViewById(R.id.txtLon);
+        txtLon.setText(String.valueOf(lon));
+        txtLon.setVisibility(View.GONE);
+
+//        Toast.makeText(this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+        TextView txtPlace = (TextView) getActivity().findViewById(R.id.txtPlaceDetails);
+        txtPlace.setVisibility(View.VISIBLE);
+        txtPlace.setText(place.getName());
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,89 +315,34 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 
         Button btnLocation = (Button) rootView.findViewById(R.id.btnLocation);
 
-        btnLocation.setOnClickListener( new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                // Construct an intent for the place picker
-                                                try {
-                                                    PlacePicker.IntentBuilder intentBuilder =
-                                                            new PlacePicker.IntentBuilder();
-                                                    Intent intent = intentBuilder.build(getActivity());
-                                                    // Start the intent by requesting a result,
-                                                    // identified by a request code.
-                                                    startActivityForResult(intent, REQUEST_PLACE_PICKER);
+        TextView txtPlace = (TextView) rootView.findViewById(R.id.txtPlaceDetails);
+        txtPlace.setVisibility(View.GONE);
 
-                                                } catch (GooglePlayServicesRepairableException e) {
-                                                    // ...
-                                                } catch (GooglePlayServicesNotAvailableException e) {
-                                                    // ...
-                                                }
-                                            }
-                                        }
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               // Construct an intent for the place picker
+                                               try {
+                                                   PlacePicker.IntentBuilder intentBuilder =
+                                                           new PlacePicker.IntentBuilder();
+                                                   Intent intent = intentBuilder.build(getActivity());
+                                                   // Start the intent by requesting a result,
+                                                   // identified by a request code.
+                                                   startActivityForResult(intent, REQUEST_PLACE_PICKER);
+
+                                               } catch (GooglePlayServicesRepairableException e) {
+                                                   // ...
+                                               } catch (GooglePlayServicesNotAvailableException e) {
+                                                   // ...
+                                               }
+                                           }
+                                       }
         );
 
-        Button btnTimer1 = (Button) rootView.findViewById(R.id.btnTimer1);
+        populateTimer(rootView);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listEntries1);
         listView.setAdapter(mTimeTableAdapter);
-
-        btnTimer1.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Button button = (Button) v;
-                View rootView = v.getRootView();
-                Chronometer timer1 = (Chronometer) rootView.findViewById(R.id.chronometer1);
-
-
-                int id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
-                if (id == -1){
-                    Toast.makeText(getActivity().getApplicationContext(), "Please select a person", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (button.getText().equals("Start")) {
-                        timer1.setBase(SystemClock.elapsedRealtime());
-                        timer1.start();
-
-                        Toast.makeText(getActivity().getApplicationContext(), "Timer started", Toast.LENGTH_SHORT).show();
-                        button.setText("Stop");
-                    } else {
-                        Toast.makeText(getActivity().getApplicationContext(), "Timer stopped", Toast.LENGTH_SHORT).show();
-                        button.setText("Start");
-                        timer1.stop();
-
-                        ContentValues values = new ContentValues();
-                        String name = "";
-                        id = ((RadioGroup) rootView.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
-                        if (id == -1){
-                            name = "Not selected";
-                        }
-                        else {
-                            if (id == R.id.rdName1) {
-                                name = ((RadioButton) rootView.findViewById(R.id.rdName1)).getText().toString();
-                            } else if (id == R.id.rdName2) {
-                                name = ((RadioButton) rootView.findViewById(R.id.rdName2)).getText().toString();
-                            }
-                        }
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR, name);
-
-                        Date today = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("MMM, d");
-                        String todayText = sdf.format(today);
-
-                        TextView txtLat = (TextView) rootView.findViewById(R.id.txtLat);
-                        TextView txtLon = (TextView) rootView.findViewById(R.id.txtLon);
-
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DATE, todayText);
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT, String.valueOf(txtLat.getText()));
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG, String.valueOf(txtLon.getText()));
-                        values.put(TimeTableContract.EventEntry.COLUMN_EVENT_DURATION, timer1.getText().toString());
-
-                        Uri insertedUri = getActivity().getApplicationContext().getContentResolver().insert(TimeTableContract.EventEntry.CONTENT_URI, values);
-                        long eventId = ContentUris.parseId(insertedUri);
-
-                    }
-                }
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -242,7 +353,7 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
                     Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .setData(TimeTableContract.EventEntry.buildEventUri(cursor.getLong(COL_EVENT_ID)));
+                            .setData(TimeTableContract.EventEntry.buildEventUri(cursor.getLong(COL_EVENT_ID)));
                     startActivity(intent);
                 }
             }

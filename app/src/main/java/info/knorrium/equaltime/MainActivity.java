@@ -25,52 +25,28 @@ import info.knorrium.equaltime.data.TimeTableContract;
 
 public class MainActivity extends ActionBarActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String TIME_FRAGMENT_TAG = "TFTAG";
     static final int NAME_SETTINGS = 0;
-
-
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //V/MainActivity( 7285): onActivityResult: 65537 - -1 - Intent { act=com.google.android.gms.location.places.ui.PICK_PLACE pkg=com.google.android.gms cmp=com.google.android.gms/com.google.android.location.places.ui.placepicker.PlacePickerActivity (has extras) }
-        if (requestCode == 65537) {
-            if (resultCode == RESULT_OK) {
-                if (!data.toString().isEmpty()) {
-                    Log.v(LOG_TAG, "onActivityResult: " + requestCode + " - " + resultCode + " - " + data.toString());
-                    Place place = PlacePicker.getPlace(data, this);
-                    String toastMsg = String.format("Place: %s", place.getName());
-
-                    double lat = place.getLatLng().latitude;
-                    TextView txtLat = (TextView) findViewById(R.id.txtLat);
-                    txtLat.setText(String.valueOf(lat));
-                    txtLat.setVisibility(View.GONE);
-
-                    double lon = place.getLatLng().longitude;
-                    TextView txtLon = (TextView) findViewById(R.id.txtLon);
-                    txtLon.setText(String.valueOf(lon));
-                    txtLon.setVisibility(View.GONE);
-
-                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                    TextView txtPlace = (TextView) findViewById(R.id.txtPlaceDetails);
-                    txtPlace.setVisibility(View.VISIBLE);
-                    txtPlace.setText(place.getName());
-
-                } else {
-                    //TODO: Fix the bug where an entry can be added without picking a location first
-                    Toast.makeText(this, "No Place selected", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (VERBOSE) {
+            Log.v(LOG_TAG, "+++ ON CREATE +++");
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new PlaceholderFragment(), TIME_FRAGMENT_TAG)
                     .commit();
+        } else {
+            Log.v(LOG_TAG, "- ON CREATE INSTANCE STATE -");
+            Log.v(LOG_TAG, "+++ ON CREATE INSTANCE BUNDLE +++ " + savedInstanceState.toString());
+            long startTime = savedInstanceState.getLong("startTime");
+            Log.v(LOG_TAG, "- SAVED START TIME - " + startTime);
+            Log.v(LOG_TAG, "- ON CREATE INSTANCE STATE -");
         }
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.registerOnSharedPreferenceChangeListener(this);
@@ -100,6 +76,80 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private static final boolean VERBOSE = true;
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (VERBOSE) Log.v(TAG, "+++ ON CREATE +++");
+//    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (VERBOSE) {
+            Log.v(LOG_TAG, "++ ON START ++");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (VERBOSE) {
+            Log.v(LOG_TAG, "+ ON RESUME +");
+            PlaceholderFragment pf = (PlaceholderFragment) getSupportFragmentManager().findFragmentByTag(TIME_FRAGMENT_TAG);
+            if (null != pf) {
+                Log.v(LOG_TAG, "PlaceholderFragment: " + pf.toString());
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (VERBOSE) {
+            Log.v(LOG_TAG, "- ON PAUSE -");
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (VERBOSE) Log.v(LOG_TAG, "-- ON STOP --");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (VERBOSE) Log.v(LOG_TAG, "- ON DESTROY -");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.v(LOG_TAG, savedInstanceState.toString());
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+
+//        savedInstanceState.putLong("elapsedTime", elapsedTime);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+
+        if (VERBOSE) {
+            Log.v(LOG_TAG, "- ON RESTORE INSTANCE STATE -");
+            long startTime = savedInstanceState.getLong("startTime");
+            Log.v(LOG_TAG, "- START TIME - " + startTime);
+            Log.v(LOG_TAG, "- ON RESTORE INSTANCE STATE -");
+        }
     }
 
     @Override
