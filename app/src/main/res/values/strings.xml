@@ -6,4 +6,7 @@
     <string name="title_activity_detail">Event Viewer</string>
     <integer name="google_play_services_version">7327000</integer>
 
+    <!-- Fragment Strings -->
+    <string name="btn_timer_start">Start</string>
+    <string name="btn_timer_stop">Stop</string>
 </resources>
