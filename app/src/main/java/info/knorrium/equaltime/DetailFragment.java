@@ -101,7 +101,8 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         txtDate.setText(data.getString(COL_EVENT_DATE));
 
         TextView txtDuration = (TextView) getView().findViewById(R.id.detail_duration);
-        txtDuration.setText(data.getString(COL_EVENT_DURATION));
+        String txtDurationValue = data.getString(COL_EVENT_DURATION);
+        txtDuration.setText(txtDurationValue);
 
         TextView txtLat = (TextView) getView().findViewById(R.id.detail_latitude);
         txtLat.setText(data.getString(COL_EVENT_COORD_LAT));
@@ -111,11 +112,15 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         txtLong.setText(data.getString(COL_EVENT_COORD_LONG));
         double dblLong = Double.valueOf(txtLong.getText().toString());
 
+        TextView txtTitle = (TextView) getView().findViewById(R.id.detail_title);
+        String txtTitleValue = data.getString(COL_EVENT_TITLE);
+        txtTitle.setText(txtTitleValue);
+
         MapView mapView = (MapView) getView().findViewById(R.id.mapview);
         mapView.getMap().addMarker(new MarkerOptions()
                 .position(new LatLng(dblLat, dblLong))
-                .title("New Marker")
-                .snippet("Placeholder snippet"));
+                .title(txtTitleValue)
+                .snippet(txtDurationValue));
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
 //                .alpha(0.7f);
 
