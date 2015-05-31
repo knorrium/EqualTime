@@ -38,6 +38,8 @@ public class TimeTableContract {
 
         public static final String COLUMN_EVENT_CREATOR = "event_creator";
 
+        public static final String COLUMN_EVENT_TITLE = "event_title";
+
         public static Uri buildEventUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

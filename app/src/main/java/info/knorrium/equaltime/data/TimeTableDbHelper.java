@@ -26,7 +26,8 @@ public class TimeTableDbHelper extends SQLiteOpenHelper {
             EventEntry.COLUMN_EVENT_DURATION + " TEXT NOT NULL, " +
             EventEntry.COLUMN_EVENT_COORD_LAT + " TEXT NOT NULL, " +
             EventEntry.COLUMN_EVENT_COORD_LONG + " TEXT NOT NULL, " +
-            EventEntry.COLUMN_EVENT_CREATOR + " TEXT NOT NULL " +
+            EventEntry.COLUMN_EVENT_CREATOR + " TEXT NOT NULL, " +
+            EventEntry.COLUMN_EVENT_TITLE + " TEXT NOT NULL " +
             " );";
         sqLiteDatabase.execSQL(SQL_CREATE_EVENT_TABLE);
     }
