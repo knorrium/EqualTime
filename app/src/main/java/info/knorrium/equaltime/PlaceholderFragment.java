@@ -57,7 +57,8 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
             TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LAT,
             TimeTableContract.EventEntry.COLUMN_EVENT_COORD_LONG,
             TimeTableContract.EventEntry.COLUMN_EVENT_DURATION,
-            TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR
+            TimeTableContract.EventEntry.COLUMN_EVENT_CREATOR,
+            TimeTableContract.EventEntry.COLUMN_EVENT_TITLE
     };
 
     static final int COL_EVENT_ID = 0;
@@ -66,6 +67,7 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
     static final int COL_EVENT_COORD_LONG = 3;
     static final int COL_EVENT_DURATION = 4;
     static final int COL_EVENT_CREATOR = 5;
+    static final int COL_EVENT_TITLE = 6;
 
     private MyPlace place;
     private long startTime = 0;
