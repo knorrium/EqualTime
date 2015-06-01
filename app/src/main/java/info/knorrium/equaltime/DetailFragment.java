@@ -7,10 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -34,6 +37,9 @@ import info.knorrium.equaltime.data.TimeTableContract;
  * Created by felipek on 4/4/15.
  */
 public class DetailFragment  extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private ShareActionProvider mShareActionProvider;
+    private String mTimeString;
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
@@ -130,6 +136,10 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 17);
         mapView.getMap().animateCamera(cameraUpdate);
 
+        mTimeString = "Total time spent by " + txtCreator.getText().toString() +
+                    " in " + txtDate.getText().toString() +
+                    " at " + txtTitle.getText().toString() +
+                    ": " + txtDuration.getText().toString();
 
 //        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
@@ -180,12 +190,30 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        inflater.inflate(R.menu.detailfragment, menu);
+        inflater.inflate(R.menu.menu_details, menu);
 
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
 
+        // Get the provider and hold onto it to set/change the share intent.
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if (mTimeString != null) {
+            mShareActionProvider.setShareIntent(createShareTimeIntent());
+        }
     }
+
+    private Intent createShareTimeIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mTimeString);
+        return shareIntent;
+    }
+
+
 
 }

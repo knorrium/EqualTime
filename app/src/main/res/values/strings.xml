@@ -9,4 +9,7 @@
     <!-- Fragment Strings -->
     <string name="btn_timer_start">Start</string>
     <string name="btn_timer_stop">Stop</string>
+
+    <!-- Share Strings -->
+    <string name="action_share">Share</string>
 </resources>
