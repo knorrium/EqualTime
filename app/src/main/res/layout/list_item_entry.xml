@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
+    android:layout_height="wrap_content"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
+    android:minHeight="?android:attr/listPreferredItemHeight"
     >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="ID"
-        android:id="@+id/entryIdView"
-        android:layout_weight="1"
-        />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="ID"-->
+        <!--android:id="@+id/entryIdView"-->
+        <!--android:layout_weight="1"-->
+        <!--/>-->
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Creator"
         android:id="@+id/creatorView"
@@ -23,19 +23,29 @@
         />
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Place"
+        android:singleLine="false"
+        android:ellipsize="end"
+        android:id="@+id/placeView"
+        android:layout_weight="1"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Date"
         android:id="@+id/dateView"
         android:layout_weight="1"/>
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Duration"
         android:id="@+id/timespentView"
         android:layout_weight="1"/>
-
+<!--
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -49,4 +59,6 @@
         android:text="Long"
         android:id="@+id/longitudeView"
         android:layout_weight="1"/>
+-->
+
 </LinearLayout>
