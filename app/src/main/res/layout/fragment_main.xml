@@ -92,7 +92,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/listEntries1"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                />
+
         </LinearLayout>
 
     </LinearLayout>
