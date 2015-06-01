@@ -55,6 +55,14 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
             TimeTableContract.EventEntry.COLUMN_EVENT_TITLE
     };
 
+    private String txtIdValue;
+    private String txtDateValue;
+    private String txtTitleValue;
+    private String txtLatValue;
+    private String txtLonValue;
+    private String txtCreatorValue;
+    private String txtDurationValue;
+
     static final int COL_EVENT_ID = 0;
     static final int COL_EVENT_DATE = 1;
     static final int COL_EVENT_COORD_LAT = 2;
@@ -95,40 +103,48 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.v(LOG_TAG, "In onLoadFinished");
         Log.v(LOG_TAG, "In onLoadFinished, DATA: " + data.toString());
-        if (!data.moveToFirst()) { return; }
+        if (!data.moveToFirst()) {
+            return;
+        }
 
-        TextView txtId = (TextView) getView().findViewById(R.id.detail_id);
-        txtId.setText(data.getString(COL_EVENT_ID));
+        txtIdValue = data.getString(COL_EVENT_ID);
+        txtCreatorValue = data.getString(COL_EVENT_CREATOR);
+        txtDateValue = data.getString(COL_EVENT_DATE);
+        txtDurationValue = data.getString(COL_EVENT_DURATION);
+        txtLatValue = data.getString(COL_EVENT_COORD_LAT);
+        txtLonValue = data.getString(COL_EVENT_COORD_LONG);
+        txtTitleValue = data.getString(COL_EVENT_TITLE);
 
-        TextView txtCreator = (TextView) getView().findViewById(R.id.detail_creator);
-        txtCreator.setText(data.getString(COL_EVENT_CREATOR));
+//        TextView txtId = (TextView) getView().findViewById(R.id.detail_id);
+//        txtId.setText(txtIdValue);
 
-        TextView txtDate = (TextView) getView().findViewById(R.id.detail_date);
-        txtDate.setText(data.getString(COL_EVENT_DATE));
+//        TextView txtCreator = (TextView) getView().findViewById(R.id.detail_creator);
+//        txtCreator.setText();
 
-        TextView txtDuration = (TextView) getView().findViewById(R.id.detail_duration);
-        String txtDurationValue = data.getString(COL_EVENT_DURATION);
-        txtDuration.setText(txtDurationValue);
+//        TextView txtDate = (TextView) getView().findViewById(R.id.detail_date);
+//        txtDate.setText();
 
-        TextView txtLat = (TextView) getView().findViewById(R.id.detail_latitude);
-        txtLat.setText(data.getString(COL_EVENT_COORD_LAT));
-        double dblLat = Double.valueOf(txtLat.getText().toString());
+//        TextView txtDuration = (TextView) getView().findViewById(R.id.detail_duration);
 
-        TextView txtLong = (TextView) getView().findViewById(R.id.detail_longitude);
-        txtLong.setText(data.getString(COL_EVENT_COORD_LONG));
-        double dblLong = Double.valueOf(txtLong.getText().toString());
+//        txtDuration.setText(txtDurationValue);
 
-        TextView txtTitle = (TextView) getView().findViewById(R.id.detail_title);
-        String txtTitleValue = data.getString(COL_EVENT_TITLE);
-        txtTitle.setText(txtTitleValue);
+//        TextView txtLat = (TextView) getView().findViewById(R.id.detail_latitude);
+//        txtLat.setText();
+        double dblLat = Double.valueOf(txtLatValue.toString());
+
+//        TextView txtLong = (TextView) getView().findViewById(R.id.detail_longitude);
+//        txtLong.setText();
+        double dblLong = Double.valueOf(txtLonValue.toString());
+
+//        TextView txtTitle = (TextView) getView().findViewById(R.id.detail_title);
+
+//        txtTitle.setText(txtTitleValue);
 
         MapView mapView = (MapView) getView().findViewById(R.id.mapview);
         mapView.getMap().addMarker(new MarkerOptions()
                 .position(new LatLng(dblLat, dblLong))
                 .title(txtTitleValue)
                 .snippet(txtDurationValue));
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-//                .alpha(0.7f);
 
         MapsInitializer.initialize(this.getActivity());
 
@@ -136,10 +152,13 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 17);
         mapView.getMap().animateCamera(cameraUpdate);
 
-        mTimeString = "Total time spent by " + txtCreator.getText().toString() +
-                    " in " + txtDate.getText().toString() +
-                    " at " + txtTitle.getText().toString() +
-                    ": " + txtDuration.getText().toString();
+        mTimeString = "Total time spent by " + txtCreatorValue.toString() +
+                    " in " + txtDateValue.toString() +
+                    " at " + txtTitleValue.toString() +
+                    ": " + txtDurationValue.toString();
+
+        TextView txtCardDetails = (TextView) getView().findViewById(R.id.txtCardDetails);
+        txtCardDetails.setText(mTimeString);
 
 //        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
