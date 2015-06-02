@@ -115,36 +115,14 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         txtLonValue = data.getString(COL_EVENT_COORD_LONG);
         txtTitleValue = data.getString(COL_EVENT_TITLE);
 
-//        TextView txtId = (TextView) getView().findViewById(R.id.detail_id);
-//        txtId.setText(txtIdValue);
 
-//        TextView txtCreator = (TextView) getView().findViewById(R.id.detail_creator);
-//        txtCreator.setText();
-
-//        TextView txtDate = (TextView) getView().findViewById(R.id.detail_date);
-//        txtDate.setText();
-
-//        TextView txtDuration = (TextView) getView().findViewById(R.id.detail_duration);
-
-//        txtDuration.setText(txtDurationValue);
-
-//        TextView txtLat = (TextView) getView().findViewById(R.id.detail_latitude);
-//        txtLat.setText();
         double dblLat = Double.valueOf(txtLatValue.toString());
-
-//        TextView txtLong = (TextView) getView().findViewById(R.id.detail_longitude);
-//        txtLong.setText();
         double dblLong = Double.valueOf(txtLonValue.toString());
-
-//        TextView txtTitle = (TextView) getView().findViewById(R.id.detail_title);
-
-//        txtTitle.setText(txtTitleValue);
-
         MapView mapView = (MapView) getView().findViewById(R.id.mapview);
         mapView.getMap().addMarker(new MarkerOptions()
                 .position(new LatLng(dblLat, dblLong))
                 .title(txtTitleValue)
-                .snippet(txtDurationValue));
+                .snippet("Time Spent: " + txtDurationValue));
 
         MapsInitializer.initialize(this.getActivity());
 
@@ -159,41 +137,6 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
 
         TextView txtCardDetails = (TextView) getView().findViewById(R.id.txtCardDetails);
         txtCardDetails.setText(mTimeString);
-
-//        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-
-//        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-//        GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.4, -122.1), 15));
-//        map.animateCamera(CameraUpdateFactory.zoomIn());
-//        map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-////
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(new LatLng(37.4, -122.1))      // Sets the center of the map to Mountain View
-//                .zoom(17)                   // Sets the zoom
-//                .bearing(90)                // Sets the orientation of the camera to east
-//                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-//                .build();                   // Creates a CameraPosition from the builder
-//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-//        MapView mapView = (MapView) getView().findViewById(R.id.map);
-//
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-////                .target(MOUNTAIN_VIEW)      // Sets the center of the map to Mountain View
-//                .zoom(17)                   // Sets the zoom
-//                .bearing(90)                // Sets the orientation of the camera to east
-//                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-//                .build();                   // Creates a CameraPosition from the builder
-//        GoogleMap map = ((SupportMapFragment) getView().findViewById(R.id.map)).getMap();
-//        map.setMyLocationEnabled(true);
-//
-//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-//        CameraUpdate center=
-//                CameraUpdateFactory.newLatLng(new LatLng(40.76793169992044,
-//                        -73.98180484771729));
-//        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
-
     }
 
     @Override
@@ -232,7 +175,4 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
         shareIntent.putExtra(Intent.EXTRA_TEXT, mTimeString);
         return shareIntent;
     }
-
-
-
 }
