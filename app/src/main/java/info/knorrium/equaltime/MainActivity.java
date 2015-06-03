@@ -114,8 +114,6 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
-
-//        savedInstanceState.putLong("elapsedTime", elapsedTime);
     }
 
     @Override
