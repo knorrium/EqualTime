@@ -160,17 +160,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         savedInstanceState.putLong("startTime", startTime);
     }
 
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//        // Save UI state changes to the savedInstanceState.
-//        // This bundle will be passed to onCreate if the process is
-//        // killed and restarted.
-//        Log.v("PlaceholderFragment", "onRestoreInstanceState -> startTime: " + savedInstanceState.getLong("startTime", startTime));
-//
-//    }
-
-    // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged( ) {
         getLoaderManager().restartLoader(EVENT_LOADER, null, this);
     }
@@ -269,7 +258,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         txtLon.setText(String.valueOf(lon));
         txtLon.setVisibility(View.GONE);
 
-//        Toast.makeText(this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
         TextView txtPlace = (TextView) getActivity().findViewById(R.id.txtPlaceDetails);
         txtPlace.setVisibility(View.VISIBLE);
         txtPlace.setText(place.getName());
