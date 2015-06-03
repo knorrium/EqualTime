@@ -2,6 +2,7 @@ package info.knorrium.equaltime;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -26,7 +27,11 @@ import info.knorrium.equaltime.data.TimeTableContract;
 public class MainActivity extends ActionBarActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private final String TIME_FRAGMENT_TAG = "TFTAG";
+    private final String DETAIL_FRAGMENT_TAG = "DFTAG";
     static final int NAME_SETTINGS = 0;
+    private ViewGroup mTwoPaneSelector;
+    private ViewGroup mOnePaneSelector;
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,23 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment(), TIME_FRAGMENT_TAG)
-                    .commit();
+            mTwoPaneSelector = (ViewGroup) findViewById(R.id.two_pane_container);
+            if (mTwoPaneSelector != null) {
+                mTwoPane = true;
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new PlaceholderFragment(), TIME_FRAGMENT_TAG)
+                        .add(R.id.empty_view, new DetailFragment(), DETAIL_FRAGMENT_TAG)
+                        .commit();
+            }
+
+            mOnePaneSelector = (ViewGroup) findViewById(R.id.one_pane_container);
+
+            if (mOnePaneSelector != null) {
+                mTwoPane = false;
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new PlaceholderFragment(), TIME_FRAGMENT_TAG)
+                        .commit();
+            }
         } else {
         }
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -130,4 +149,5 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         recreate();
     }
+
 }

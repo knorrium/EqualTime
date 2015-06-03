@@ -19,11 +19,24 @@ public class DetailActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction.
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
 
-            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.detail_container, new MapFragment())
-                    .add(R.id.detail_container, new DetailFragment())
-                    .commit();
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
+
+            if (findViewById(R.id.two_pane_container) != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.empty_view, fragment)
+                        .commit();
+            }
+            else {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.detail_container, fragment)
+                        .commit();
+            }
         }
     }
 
