@@ -97,6 +97,8 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 //        String locationSetting = Utility.getPreferredLocation(getActivity());
 
         // Sort order:  Ascending, by date.
+        //TODO: This is not really sorted by date as the date is stored as String, not timestamp
+        //      it should be sorted by either the ID or a timestamp
         String sortOrder = TimeTableContract.EventEntry.COLUMN_EVENT_DATE + " ASC";
 //        Uri weatherForLocationUri = TimeTableContract.EventEntry.buildEventUri(1);
         Uri contenturi = Uri.parse("content://info.knorrium.equaltime");
