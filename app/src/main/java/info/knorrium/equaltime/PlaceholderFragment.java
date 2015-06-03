@@ -84,7 +84,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
                     this.place = new MyPlace(place);
                     populatePlace();
                 } else {
-                    //TODO: Fix the bug where an entry can be added without picking a location first
                     Toast.makeText(this.getActivity(), "No Place selected", Toast.LENGTH_LONG).show();
                 }
             }
