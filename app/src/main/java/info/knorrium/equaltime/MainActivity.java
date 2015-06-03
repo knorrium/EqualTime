@@ -42,11 +42,6 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
                     .add(R.id.container, new PlaceholderFragment(), TIME_FRAGMENT_TAG)
                     .commit();
         } else {
-            Log.v(LOG_TAG, "- ON CREATE INSTANCE STATE -");
-            Log.v(LOG_TAG, "+++ ON CREATE INSTANCE BUNDLE +++ " + savedInstanceState.toString());
-            long startTime = savedInstanceState.getLong("startTime");
-            Log.v(LOG_TAG, "- SAVED START TIME - " + startTime);
-            Log.v(LOG_TAG, "- ON CREATE INSTANCE STATE -");
         }
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.registerOnSharedPreferenceChangeListener(this);
@@ -80,12 +75,6 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
 
     private static final boolean VERBOSE = true;
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (VERBOSE) Log.v(TAG, "+++ ON CREATE +++");
-//    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -97,33 +86,25 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
     @Override
     public void onResume() {
         super.onResume();
-        if (VERBOSE) {
-            Log.v(LOG_TAG, "+ ON RESUME +");
             PlaceholderFragment pf = (PlaceholderFragment) getSupportFragmentManager().findFragmentByTag(TIME_FRAGMENT_TAG);
             if (null != pf) {
-                Log.v(LOG_TAG, "PlaceholderFragment: " + pf.toString());
+
             }
         }
-    }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (VERBOSE) {
-            Log.v(LOG_TAG, "- ON PAUSE -");
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (VERBOSE) Log.v(LOG_TAG, "-- ON STOP --");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (VERBOSE) Log.v(LOG_TAG, "- ON DESTROY -");
     }
 
     @Override
@@ -144,12 +125,7 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
         // Restore UI state from the savedInstanceState.
         // This bundle has also been passed to onCreate.
 
-        if (VERBOSE) {
-            Log.v(LOG_TAG, "- ON RESTORE INSTANCE STATE -");
-            long startTime = savedInstanceState.getLong("startTime");
-            Log.v(LOG_TAG, "- START TIME - " + startTime);
-            Log.v(LOG_TAG, "- ON RESTORE INSTANCE STATE -");
-        }
+        long startTime = savedInstanceState.getLong("startTime");
     }
 
     @Override
