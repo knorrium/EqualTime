@@ -1,12 +1,12 @@
 <resources>
     <string name="title_activity_settings">Settings</string>
 
-    <string name="pref_first_name">First Name</string>
+    <string name="pref_first_name">Person 1</string>
 
-    <string name="pref_second_name">Second Name</string>
+    <string name="pref_second_name">Person 2</string>
 
-    <string name="pref_first_name_default">Jane Doe</string>
-    <string name="pref_second_name_default">John Doe</string>
+    <string name="pref_first_name_default">First Person</string>
+    <string name="pref_second_name_default">Second Person</string>
 
     <string name="pref_first_name_key" translatable="false">first_name</string>
     <string name="pref_second_name_key" translatable="false">second_name</string>
