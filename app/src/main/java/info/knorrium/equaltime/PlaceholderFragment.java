@@ -137,9 +137,7 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onPause() {
         super.onPause();
-        Log.v("PlaceHolderFragment", "onPause - startTime -" + startTime);
         if (place != null) {
-            Log.v("PlaceHolderFragment", "onPause - Place: " + place.toString());
 
         }
 
