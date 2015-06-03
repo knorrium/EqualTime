@@ -35,10 +35,6 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (VERBOSE) {
-            Log.v(LOG_TAG, "+++ ON CREATE +++");
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -92,14 +88,11 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
         return super.onOptionsItemSelected(item);
     }
 
-    private static final boolean VERBOSE = true;
+    private static final boolean VERBOSE = false;
 
     @Override
     public void onStart() {
         super.onStart();
-        if (VERBOSE) {
-            Log.v(LOG_TAG, "++ ON START ++");
-        }
     }
 
     @Override
@@ -128,7 +121,6 @@ public class MainActivity extends ActionBarActivity implements SharedPreferences
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        Log.v(LOG_TAG, savedInstanceState.toString());
         super.onSaveInstanceState(savedInstanceState);
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is

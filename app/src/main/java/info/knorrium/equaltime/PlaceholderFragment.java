@@ -78,7 +78,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
                 if (data != null) {
-                    Log.v(LOG_TAG, "onActivityResult: " + requestCode + " - " + resultCode + " - " + data.toString());
                     Place place = PlacePicker.getPlace(data, this.getActivity());
                     String toastMsg = String.format("Place: %s", place.getName());
                     this.place = new MyPlace(place);
@@ -147,7 +146,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
             populatePlace();
         }
         populateTimer(getView());
-        Log.v("PlaceHolderFragment", "onResume startTime - " + startTime);
     }
 
     @Override
@@ -179,8 +177,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
             timer1.setBase(this.startTime);
             timer1.start();
         } else {
-            Log.v("populateTimer", getString(R.string.btn_timer_start));
-            Log.v("populateTimer", getResources().getString(R.string.btn_timer_start));
             btnTimer.setText(getResources().getString(R.string.btn_timer_start));
         }
 
