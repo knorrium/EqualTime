@@ -94,13 +94,10 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-//        String locationSetting = Utility.getPreferredLocation(getActivity());
-
         // Sort order:  Ascending, by date.
         //TODO: This is not really sorted by date as the date is stored as String, not timestamp
         //      it should be sorted by either the ID or a timestamp
         String sortOrder = TimeTableContract.EventEntry.COLUMN_EVENT_DATE + " ASC";
-//        Uri weatherForLocationUri = TimeTableContract.EventEntry.buildEventUri(1);
         Uri contenturi = Uri.parse("content://info.knorrium.equaltime");
         Uri tableuri = Uri.withAppendedPath(contenturi,TimeTableContract.EventEntry.TABLE_NAME);
 
@@ -123,8 +120,7 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        inflater.inflate(R.menu.forecastfragment, menu);
+
     }
 
     @Override
@@ -161,7 +157,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
         savedInstanceState.putSerializable("place", place);
-
         savedInstanceState.putLong("startTime", startTime);
     }
 
@@ -177,23 +172,12 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 
     // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged( ) {
-//        updateWeather();
         getLoaderManager().restartLoader(EVENT_LOADER, null, this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_refresh) {
-//            updateWeather();
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
