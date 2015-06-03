@@ -75,11 +75,9 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.v("onActivtyResult", "requestCode: " + requestCode + " - resultCode: " + resultCode + " - " + data.toString());
-        //V/MainActivity( 7285): onActivityResult: 65537 - -1 - Intent { act=com.google.android.gms.location.places.ui.PICK_PLACE pkg=com.google.android.gms cmp=com.google.android.gms/com.google.android.location.places.ui.placepicker.PlacePickerActivity (has extras) }
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
-                if (!data.toString().isEmpty()) {
+                if (data != null) {
                     Log.v(LOG_TAG, "onActivityResult: " + requestCode + " - " + resultCode + " - " + data.toString());
                     Place place = PlacePicker.getPlace(data, this.getActivity());
                     String toastMsg = String.format("Place: %s", place.getName());
