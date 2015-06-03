@@ -146,10 +146,8 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
 
     public void onResume() {
         super.onResume();
-        Log.v("PlaceHolderFragment", "onResume");
         getActivity().getSupportFragmentManager().findFragmentByTag("TFTAG").getRetainInstance();
         if (place != null) {
-            Log.v("PlaceHolderFragment", "onResume - Place: " + place.toString());
             populatePlace();
         }
         populateTimer(getView());
@@ -162,8 +160,6 @@ public class PlaceholderFragment extends Fragment implements LoaderManager.Loade
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
-        Log.v("PlaceholderFragment", "onSaveInstanceState -> startTime: " + startTime);
-        Log.v("PlaceholderFragment", "onSaveInstanceState -> place: " + place);
         savedInstanceState.putSerializable("place", place);
 
         savedInstanceState.putLong("startTime", startTime);
