@@ -11,4 +11,9 @@
 
     <!-- Share Strings -->
     <string name="action_share">Share</string>
+
+    <!-- Second Pane Strings -->
+    <string name="second_pane_welcome">Welcome to Equal Time!</string>
+    <string name="second_pane_record_activity">Record an activity by selecting a location first.</string>
+    <string name="second_pane_stay_tuned">Stay tuned for statistics and insights in the upcoming versions!</string>
 </resources>
