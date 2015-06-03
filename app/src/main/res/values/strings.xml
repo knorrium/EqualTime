@@ -11,6 +11,7 @@
 
     <!-- Share Strings -->
     <string name="action_share">Share</string>
+    <string name="action_share_subject">Time tracking details from EqualTime</string>
 
     <!-- Second Pane Strings -->
     <string name="second_pane_welcome">Welcome to Equal Time!</string>
