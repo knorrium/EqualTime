@@ -29,25 +29,12 @@ public class MapFragment extends Fragment {
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
-//        savedInstanceState.getBundle("LOCATION");
         mapView.onCreate(savedInstanceState);
 
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setMyLocationEnabled(true);
-
-        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-//        MapsInitializer.initialize(this.getActivity());
-
-        // Updates the location and zoom of the MapView
-//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(37.389898, -121.984664), 17);
-//        map.animateCamera(cameraUpdate);
-
-//        map.addMarker(new MarkerOptions()
-//                .position(new LatLng(37.389898, -121.984664))
-//                .title("Hello world"));
-
         return v;
     }
 

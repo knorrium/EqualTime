@@ -37,13 +37,10 @@ public class TimeTableProvider extends ContentProvider {
             TimeTableContract.EventEntry.TABLE_NAME +
                     "." + TimeTableContract.EventEntry._ID + " = ? ";
 
-
     private Cursor getEventById(Uri uri, String[] projection, String sortOrder) {
         String selectedId = TimeTableContract.EventEntry.getEventFromUri(uri);
         String[] selectionArgs;
         String selection;
-
-
 
         return sEventQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
@@ -133,12 +130,10 @@ public class TimeTableProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Student: Start by getting a writable database
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int deleted = 0;
-        // Student: Use the uriMatcher to match the WEATHER and LOCATION URI's we are going to
-        // handle.  If it doesn't match these, throw an UnsupportedOperationException.
+
         if (selection == null) {
             selection = "1";
         }
@@ -153,23 +148,16 @@ public class TimeTableProvider extends ContentProvider {
         }
 
 
-        // Student: A null value deletes all rows.  In my implementation of this, I only notified
-        // the uri listeners (using the content resolver) if the rowsDeleted != 0 or the selection
-        // is null.
-        // Oh, and you should notify the listeners here.
         if (deleted > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        // Student: return the actual rows deleted
         return deleted;
     }
 
     @Override
-    public int update(
-            Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // Student: This is a lot like the delete function.  We return the number of rows impacted
-        // by the update.
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int updated = 0;

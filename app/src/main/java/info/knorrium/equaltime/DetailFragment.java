@@ -80,11 +80,6 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
     }
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        Intent intent = getActivity().getIntent();
-//        if (intent == null) {
-//            return null;
-//        }
-
         if (null != mUri) {
 
         Intent intent = getActivity().getIntent();
@@ -113,7 +108,6 @@ public class DetailFragment  extends Fragment implements LoaderManager.LoaderCal
             txtLatValue = data.getString(COL_EVENT_COORD_LAT);
             txtLonValue = data.getString(COL_EVENT_COORD_LONG);
             txtTitleValue = data.getString(COL_EVENT_TITLE);
-
 
             double dblLat = Double.valueOf(txtLatValue.toString());
             double dblLong = Double.valueOf(txtLonValue.toString());
