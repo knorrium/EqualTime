@@ -1,4 +1,4 @@
-EqualTime
+EqualTime ![Travis CI Build Status](https://travis-ci.org/knorrium/EqualTime.svg?branch=master)
 ---------
 
 This is an Android app developed for Udacity's "Developing Android Apps" course, facilitated by the [GDG Alameda Meetup Group](http://www.meetup.com/GDGAlameda/) from February to April 2015.
